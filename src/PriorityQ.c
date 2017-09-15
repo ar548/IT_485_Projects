@@ -11,7 +11,7 @@ int pq_isEmpty(PriorityQueue *pq) {
 	return 0;
 }
 
-PriorityQueue * new_pq(size_t elementSize)
+PriorityQueue * pq_new(size_t elementSize)
 {
 	PriorityQueue *pq = (PriorityQueue*)malloc(sizeof(PriorityQueue));
 	pq->head = NULL;
@@ -26,11 +26,25 @@ pq_node_t * pq_node_new(void* data, int priority) {
 	pq_node->priority = priority;
 	pq_node->next = NULL;
 	pq_node->prev = NULL;
+	return pq_node;
 }
 
 void pq_free(PriorityQueue *pq)
 {
+	if (!pq_isEmpty(pq)) {
+		pq_node_t *temp = NULL;
+		pq_node_t *curr = pq->head;
 
+		while (curr != NULL) {
+			if (curr->data != NULL){
+				slog("Warning: attempting to frsee a node that points to data. ");
+			}
+			temp = curr->next;
+			free(curr);
+			curr = temp;
+		}
+	}
+	free(pq);
 }
 
 void *pq_delete_max(PriorityQueue *pq)
@@ -90,18 +104,18 @@ void pq_insert(PriorityQueue *pq, void *data, int priority)
 
 	pq_node_t *temp = pq_node_new(data, priority);
 
+	// check if the queue is empty
+	if (pq_isEmpty(pq)) {
+		pq->head = temp;
+		pq->tail = temp;
+		return;
+	}
+
 	// check priority is greater than tail->priority (the nes node will be new tail)
 	if (priority >= pq->tail->priority) {
 		// TODO: move this check up to the start of the function to save on time
 		pq->tail->next = temp;
 		temp->prev = pq->tail;
-		pq->tail = temp;
-		return;
-	}
-
-	// check if the queue is empty
-	if (pq_isEmpty(pq)) {
-		pq->head = temp;
 		pq->tail = temp;
 		return;
 	}

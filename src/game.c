@@ -2,9 +2,41 @@
 #include "gf2d_graphics.h"
 #include "gf2d_sprite.h"
 #include "simple_logger.h"
+#include "PriorityQ.h"
 
 int main(int argc, char * argv[])
 {
+	/*for testing of Alex Rosen's project only*/
+	PriorityQueue *pq = pq_new(6*sizeof(char));
+	pq_insert(pq, (void*)"three", 3);
+	pq_insert(pq, (void*)"one  ", 1);
+	pq_insert(pq, (void*)"three", 3);
+	pq_insert(pq, (void*)"seven", 7);
+	pq_insert(pq, (void*)"four ", 4);
+	pq_insert(pq, (void*)"five ", 5);
+
+	slog("str 1: %s", pq_delete_max(pq));
+	slog("str 2: %s", pq_delete_max(pq));
+	slog("str 3: %s", pq_delete_max(pq));
+	slog("str 4: %s", pq_delete_max(pq));
+	slog("str 5: %s", pq_delete_max(pq));
+	slog("str 6: %s", pq_delete_max(pq));
+
+	pq_insert(pq, (void*)"three", 3);
+	pq_insert(pq, (void*)"one  ", 1);
+	pq_insert(pq, (void*)"three", 3);
+	pq_insert(pq, (void*)"seven", 7);
+	pq_insert(pq, (void*)"four ", 4);
+	pq_insert(pq, (void*)"five ", 5);
+
+	slog("str 1: %s", pq_delete_min(pq));
+	slog("str 2: %s", pq_delete_min(pq));
+	slog("str 3: %s", pq_delete_min(pq));
+	slog("str 4: %s", pq_delete_min(pq));
+	slog("str 5: %s", pq_delete_min(pq));
+	slog("str 6: %s", pq_delete_min(pq));
+
+
     /*variable declarations*/
     int done = 0;
     const Uint8 * keys;
